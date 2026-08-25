@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% assign page_title = page.title | default: site.title %}
+{% assign page_desc = page.description | default: site.description %}
+<title>{% if page.title %}{{ page.title }} · Room8{% else %}{{ site.title }}{% endif %}</title>
+<meta name="description" content="{{ page_desc }}">
+<link rel="canonical" href="{{ site.url }}{{ site.baseurl }}{{ page.url }}">
+
+<!-- These links get pasted into App Store listings, TestFlight invites and
+     group chats, so they need to unfurl as something other than a bare URL. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Room8 · TestFlight beta">
+<meta property="og:title" content="{{ page_title }}">
+<meta property="og:description" content="{{ page_desc }}">
+<meta property="og:url" content="{{ site.url }}{{ site.baseurl }}{{ page.url }}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ page_title }}">
+<meta name="twitter:description" content="{{ page_desc }}">
+<meta name="theme-color" content="#FAFAF8">
+
+<!-- The app's house mark, inlined so there's no binary asset to keep in sync. -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2316131F' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8'/><path d='M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'/></svg>">
+<style>
+/* Design tokens lifted from the app's own theme (mobile/constants/theme.ts)
+   so the web pages read as the same product, not a separate site. */
+:root{
+  --bg:#FAFAF8;
+  --surface:#FFFFFF;
+  --surface-2:#F0EFEA;
+  --border:#E4E2DB;
+  --border-light:#F0EFEA;
+  --text:#16131F;
+  --subtext:#7A7771;
+  --muted:#9E9B93;
+  --accent:#FA0F00;
+  --radius:20px;
+}
+
+/* The app has no dark theme (Colors.dark has no app* tokens), so this
+   commits to light rather than half-supporting a scheme the app lacks. */
+:root{ color-scheme:light; }
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; }
+
+/* Everything here is a fade or a small translate, so honouring the OS
+   setting costs nothing and stops the page moving for people who asked
+   it not to. */
+@media (prefers-reduced-motion:reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{
+    animation-duration:.01ms !important; animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+.wrap{ max-width:720px; margin:0 auto; padding:34px 20px 72px; }
+
+/* Skip link — the documents are long, so keyboard users get a way past
+   the header without tabbing through it. */
+.skip{ position:absolute; left:-9999px; }
+.skip:focus{
+  left:12px; top:12px; z-index:10;
+  background:var(--surface); border:1px solid var(--border);
+  padding:10px 14px; border-radius:12px;
+  font-size:14px; font-weight:600; color:var(--text); text-decoration:none;
+}
+
+/* ---- header ---- */
+.site-head{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:30px; }
+.brand{ display:inline-flex; align-items:center; gap:9px; text-decoration:none; color:var(--text); }
+.brand svg{ width:21px; height:21px; color:var(--muted); flex:none; }
+.brand-name{ font-size:19px; font-weight:800; letter-spacing:-.4px; }
+
+/* These documents govern a pre-release build, which is not something a
+   visitor should have to reach Section 3 to discover. Squared off rather
+   than a pill — it's a status label, not a marketing tag. */
+.badge{
+  font-size:11px; font-weight:700; letter-spacing:.3px;
+  color:var(--subtext); background:var(--surface-2);
+  border:1px solid var(--border); border-radius:7px;
+  padding:3px 8px; white-space:nowrap;
+}
+
+/* ---- hero (index) ---- */
+.eyebrow{
+  font-size:12px; font-weight:700; letter-spacing:.6px;
+  text-transform:uppercase; color:var(--muted); margin:0;
+}
+h1{
+  font-size:clamp(29px,6vw,37px); font-weight:800;
+  letter-spacing:-1px; line-height:1.1; margin:7px 0 0;
+}
+.lede{ color:var(--subtext); margin:14px 0 0; max-width:54ch; }
+.rule{ width:28px; height:3px; border-radius:2px; background:var(--accent); margin:20px 0 0; }
+
+/* ---- document links (index) ---- */
+.doc-list{ display:grid; gap:12px; margin-top:30px; }
+.doc-card{
+  display:flex; align-items:center; gap:14px;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:17px 19px;
+  text-decoration:none; color:inherit;
+  transition:border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+.doc-card:hover{
+  border-color:#D6D3CA; transform:translateY(-1px);
+  box-shadow:0 6px 18px rgba(22,19,31,.06);
+}
+/* Pressed state — mirrors the squeeze the app's own buttons use, so a tap
+   registers before the next page loads. */
+.doc-card:active{
+  transform:scale(.985); box-shadow:none; border-color:var(--border);
+  transition-duration:.06s;
+}
+
+/* One focus treatment for everything focusable, rather than only the
+   places that happened to get one. */
+.skip:focus-visible,
+.brand:focus-visible,
+.back:focus-visible,
+.doc-card:focus-visible,
+.doc-next a:focus-visible,
+.site-foot a:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:6px; }
+/* Every child below is targeted by its own class — a bare `.doc-card span`
+   rule would out-specify `.doc-icon` and grey out the icons and titles. */
+.doc-icon{
+  width:44px; height:44px; border-radius:14px; flex:none;
+  background:var(--surface-2); display:grid; place-items:center; color:var(--text);
+}
+.doc-icon svg{ width:20px; height:20px; }
+.doc-text{ min-width:0; }
+.doc-name{ display:block; font-size:16px; font-weight:700; letter-spacing:-.2px; color:var(--text); }
+.doc-sub{ display:block; font-size:13px; color:var(--muted); margin-top:1px; }
+.doc-chev{ margin-left:auto; color:var(--muted); flex:none; }
+.doc-chev svg{ width:18px; height:18px; display:block; }
+
+/* ---- document pages ---- */
+.back{
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:13px; font-weight:600; color:var(--muted);
+  text-decoration:none; margin-bottom:18px;
+  transition:color .18s ease;
+}
+.back:hover{ color:var(--text); }
+
+/* Reaching the end of one document shouldn't be a dead end. */
+.doc-next{ margin-top:22px; }
+.doc-next a{
+  display:inline-flex; align-items:center; gap:7px;
+  font-size:14px; font-weight:600; color:var(--text); text-decoration:none;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:999px; padding:10px 18px;
+  transition:border-color .18s ease, transform .18s ease;
+}
+.doc-next a:hover{ border-color:#D6D3CA; transform:translateY(-1px); }
+.doc-next a:active{ transform:scale(.985); transition-duration:.06s; }
+.doc-next span{ color:var(--muted); }
+.card{
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:34px 30px;
+}
+.doc h1{ font-size:clamp(26px,5vw,32px); }
+.meta{ font-size:13px; color:var(--muted); margin:10px 0 0; }
+.doc h2{
+  font-size:18px; font-weight:800; letter-spacing:-.3px;
+  margin:34px 0 12px; padding-top:26px; border-top:1px solid var(--border-light);
+  text-wrap:balance;
+}
+.doc h3{
+  font-size:12px; font-weight:700; letter-spacing:.7px; text-transform:uppercase;
+  color:var(--muted); margin:24px 0 8px;
+}
+/* Capped measure — the card is wide enough for tables, but running dense
+   legal prose the full width pushes past 80 characters a line and gets
+   genuinely hard to track. text-wrap:pretty keeps single words off the
+   last line. */
+.doc p{ margin:0 0 15px; max-width:68ch; text-wrap:pretty; }
+.doc ul{ margin:0 0 15px; padding-left:20px; max-width:68ch; }
+.doc li{ margin-bottom:7px; }
+.doc a{ color:var(--accent); text-decoration:underline; text-underline-offset:2px; }
+.doc a:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; border-radius:3px; }
+.doc strong{ font-weight:700; }
+
+/* Callouts — the standalone emphasis lines in the source documents
+   ("Read this clause carefully", "What that means for your data"). */
+.doc blockquote{
+  margin:0 0 16px; padding:12px 16px;
+  background:rgba(250,15,0,.05);
+  border-left:3px solid var(--accent);
+  border-radius:0 10px 10px 0;
+  font-size:14px; font-weight:600;
+}
+.doc blockquote p{ margin:0; }
+
+/* ---- tables ---- */
+/* Wrapped in a scroll container by the script at the bottom of this file.
+   Squeezing three columns into a phone width breaks words mid-syllable and
+   makes rows absurdly tall, so the table keeps a readable min-width and
+   scrolls sideways instead. */
+.table-scroll{ overflow-x:auto; margin:0 0 18px; -webkit-overflow-scrolling:touch; }
+.table-scroll table{ margin:0; min-width:500px; }
+.doc table{
+  width:100%; border-collapse:separate; border-spacing:0;
+  border:1px solid var(--border); border-radius:14px;
+  overflow:hidden; margin:0 0 18px; font-size:14px;
+}
+.doc th{
+  background:var(--surface-2); text-align:left;
+  font-size:11px; font-weight:700; letter-spacing:.5px; text-transform:uppercase;
+  color:var(--subtext); padding:10px 14px;
+}
+.doc td{
+  padding:12px 14px; border-top:1px solid var(--border-light);
+  vertical-align:top; overflow-wrap:break-word;
+}
+.doc tbody tr:first-child td{ border-top:1px solid var(--border); }
+
+/* ---- footer ---- */
+.site-foot{
+  margin-top:38px; padding-top:20px; border-top:1px solid var(--border);
+  font-size:13px; color:var(--muted);
+  display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+}
+.site-foot a{ color:var(--muted); text-decoration:none; transition:color .18s ease; }
+.site-foot a:hover{ color:var(--text); text-decoration:underline; }
+.brand{ transition:opacity .18s ease; }
+.brand:hover{ opacity:.7; }
+
+@media (max-width:560px){
+  .card{ padding:26px 20px; border-radius:16px; }
+  .doc table{ font-size:13px; }
+  .doc th,.doc td{ padding:9px 11px; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<div class="wrap">
+
+  <header class="site-head">
+    <a class="brand" href="{{ site.baseurl }}/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      <span class="brand-name">Room8</span>
+    </a>
+    <span class="badge">TestFlight beta</span>
+  </header>
+
+  <main id="content">
+    {{ content }}
+  </main>
+
+  <footer class="site-foot">
+    <span>© Room8. All rights reserved.</span>
+    <a href="mailto:support@room8.xyz">support@room8.xyz</a>
+  </footer>
+
+</div>
+
+<script>
+/* Markdown can't wrap its own tables, so give each one a scroll container.
+   Progressive enhancement — without JS the tables still render, just narrower. */
+document.querySelectorAll('.doc table').forEach(function (table) {
+  var wrap = document.createElement('div');
+  wrap.className = 'table-scroll';
+  table.parentNode.insertBefore(wrap, table);
+  wrap.appendChild(table);
+});
+</script>
+</body>
+</html>

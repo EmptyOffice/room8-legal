@@ -1,0 +1,9 @@
+title: Room8 Legal
+description: Terms of Service and Privacy Policy for the Room8 TestFlight beta.
+
+# Used for canonical/og:url, and to build navigation links that survive being
+# served from a deep path (GitHub Pages renders 404.html at whatever URL was
+# requested, so relative links would break there).
+# On a custom domain later: set url to the domain and baseurl to "".
+url: https://emptyoffice.github.io
+baseurl: /room8-legal
