@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: Privacy Policy
-updated: Last updated 22 August 2026.
+updated: Last updated 19 September 2026.
 description: What the Room8 TestFlight beta collects, who processes it, and how long it is kept.
 next_title: Terms of Service
 next_url: terms.html
@@ -22,7 +22,20 @@ Every category below corresponds to data the app actually stores.
 | Money records | Debts, balances, recurring payments, split acceptances, disputes | Track what roommates owe each other. No payments are processed. |
 | Receipts | Receipt photo, store name and address, items, totals, date, payment method string | Turn a photo into an itemised split |
 | Shopping & inventory | Items, quantities, categories, costs, who added and who bought | Run the shared list |
+| Usage analytics (optional) | Screens viewed, feature interactions, event times, app/device information, analytics identifiers and an internal account ID when signed in | Understand feature adoption and improve usability and reliability |
 | Device | Push token, device id, platform, last seen | Send notifications you have enabled |
+
+### Optional usage analytics
+
+We use Mixpanel to understand how people use Room8 and improve the app. Usage analytics is on by default, including before you sign in or create an account. You can turn it off using **Share usage analytics** during signup or in Settings. Your choice is separate from accepting the Terms of Service and does not affect access to core features.
+
+The preference is saved on your device and remains in effect across sign-in and sign-out. A different device or a reinstall may start with analytics enabled again. Events that occur while analytics is disabled are discarded and are not replayed if you enable it later.
+
+Analytics may include screen names, feature interactions, event times, app version, operating system, device information, and analytics identifiers. When signed in, events may be associated with your internal Room8 account ID. This is not anonymous data. Like other online services, Mixpanel receives connection information such as an IP address when the app sends requests.
+
+We do not include names, email addresses, message contents, household street addresses, search text, photos, receipts, or financial content in our analytics events. We do not use Mixpanel for targeted advertising. Automatic interaction capture and session replay are not enabled in this integration.
+
+See [Usage Analytics](usage-analytics.html) for more about your choices, retention and deletion requests.
 
 ### Sensitive categories, named explicitly
 
@@ -30,13 +43,14 @@ Some laws treat these differently, so they are called out rather than buried: da
 
 ## 2. Who else processes your data
 
-We do not sell your personal information. We share it with these providers so the app can work:
+We do not sell your personal information. We share it with these providers to operate and improve the app:
 
 | Provider | What it handles | Where |
 | --- | --- | --- |
 | Supabase | Sign-in, and the database holding everything above | United States |
 | Amazon S3 | Photos, receipts and message attachments | United States |
 | Amazon SES | Account emails — verification codes, address changes | United States |
+| Mixpanel | Optional usage events, technical context and analytics identifiers described above | United States (US project region) |
 | Expo | Delivering push notifications to your device | United States |
 | OpenAI | Receipt images you upload are sent to OpenAI to read the text. Only receipts — never messages, profiles or calendars. | United States |
 
@@ -46,9 +60,11 @@ We may also disclose data where the law requires it, or to protect someone's saf
 
 Account and household data is kept while your account is open. Messages and household records persist for the household even after an individual leaves, because they belong to the shared history. Connected-calendar events are replaced on every sync and only ever cover the coming weeks.
 
-When you delete your account, everything that identifies you is erased immediately — name, photo, bio, contact details, links, payment handles, calendar and lifestyle answers — and your devices stop receiving notifications. What stays is an anonymous placeholder, because messages you sent and balances involving other people are also part of their record; you appear to them as a deleted account.
+When you delete your account, the following identifying information in your Room8 profile is erased immediately — name, photo, bio, contact details, links, payment handles, calendar and lifestyle answers — and your devices stop receiving notifications. What stays is an anonymous placeholder, because messages you sent and balances involving other people are also part of their record; you appear to them as a deleted account.
 
 Your sign-in record is removed separately, by an automated weekly cleanup, so it can persist for up to seven days after the rest is gone. It grants access to nothing in the meantime. Routine backups age out on their own cycle.
+
+Optional analytics records are handled separately from account and household records. Turning analytics off stops future optional analytics collection on that device; it does not erase previously collected events. Deleting your Room8 account does not currently trigger automatic deletion of historical Mixpanel records. To request deletion of analytics associated with your account, contact [support@room8.xyz](mailto:support@room8.xyz) with the subject "Privacy request". Analytics retention depends on the project retention settings and applicable deletion requests; disabling analytics is not a retention or deletion setting.
 
 ## 4. Your rights
 

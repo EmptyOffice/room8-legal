@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: Terms of Service
-updated: Last updated 22 August 2026. Effective on acceptance.
+updated: Last updated 19 September 2026. Effective on acceptance.
 description: The terms you agree to when you use the Room8 TestFlight beta.
 next_title: Privacy Policy
 next_url: privacy.html
@@ -54,6 +54,12 @@ You are responsible for having the right to share what you upload.
 ## 8. Connected calendars
 
 If you subscribe to a calendar feed, you confirm you are entitled to share it. We fetch it on your behalf on a schedule, store only the next several weeks of events, and show your household either the times you are busy or the event names — whichever you selected. Your calendar link itself is never shown to anyone else.
+
+### Optional usage analytics
+
+Room8 uses Mixpanel for optional usage analytics to understand feature adoption and improve usability and reliability. Analytics is on by default, including before sign-in. You can turn it off using **Share usage analytics** during signup or in Settings without losing access to core features. Your analytics choice is separate from acceptance of these Terms and is saved on your device.
+
+Our [Privacy Policy](privacy.html) and [Usage Analytics](usage-analytics.html) page describe the information involved, device-specific preferences, retention and deletion requests.
 
 ## 9. Acceptable use
 
